@@ -9,5 +9,5 @@ def hello_world():
 def about_page(username):
     return f'<h1>About {username}</h1>'
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
