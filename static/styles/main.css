@@ -1,51 +1,26 @@
 * {
     font-size: 17px;
-    font-family: 'Maven Pro', sans-serif;
 }
 
 body {
-    font-size: 1rem;
+    padding: 0;
     margin: 0;
-    background-color: #fff8f0;
+    font-family: 'Poppins', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    margin: 0;
-    font-family: 'Berkshire Swash', serif;
-    font-weight: 400;
+    font-family: 'Inter', sans-serif;
 }
-
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2.25rem; }
-h3 { font-size: 2rem; }
-h4 { font-size: 1.75rem; }
-h5 { font-size: 1.5rem; }
-h6 { font-size: 1.25rem; }
-
 
 
 /* IDs */
-#navbar {
-    padding: 0;
-    margin: 0;
+#header {
+    width: 1440px;
+    height: 48px;
+    color: white;
+    background-color: black;
 }
 
-#navbar ul {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: #dddddd;
-}
-
-#navbar li { 
-    display: inline-block;
-}
-
-#navbar-item {
-    margin-right: 25px;
-    font-size: 1.25rem;
+#header-text {
+    padding: 12px 136px 12px 445px;
 }

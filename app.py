@@ -5,9 +5,11 @@ app = Flask(__name__)
 def hello_world():
     return render_template('index.html')
 
-@app.route('/about/<username>')
-def about_page(username):
-    return f'<h1>About {username}</h1>'
+@app.route('/categories')
+def categories():
+    return render_template('categories.html')
+
+# @app.route
 
 if __name__ == "__main__":
     app.run(debug=True)
