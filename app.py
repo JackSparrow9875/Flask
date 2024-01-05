@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 app = Flask(__name__)
 
 @app.route('/')
@@ -8,22 +8,22 @@ def hello_world():
 @app.route('/categories')
 def categories():
     categories = [
-    {"CategoryID": 1, "CategoryName": "Electronics", "Description": "Latest gadgets and tech accessories"},
-    {"CategoryID": 2, "CategoryName": "Clothing", "Description": "Fashionable apparel for all occasions"},
-    {"CategoryID": 3, "CategoryName": "Home and Furniture", "Description": "Stylish and functional home decor"},
-    {"CategoryID": 4, "CategoryName": "Sports and Outdoors", "Description": "Equipment for sports and outdoor activities"},
-    {"CategoryID": 5, "CategoryName": "Books and Literature", "Description": "A wide range of books for all interests"},
-    {"CategoryID": 6, "CategoryName": "Beauty and Personal Care", "Description": "Skincare, cosmetics, and personal care products"},
-    {"CategoryID": 7, "CategoryName": "Toys and Games", "Description": "Fun and educational toys and games"},
-    {"CategoryID": 8, "CategoryName": "Automotive", "Description": "Car accessories and maintenance products"},
-    {"CategoryID": 9, "CategoryName": "Health and Wellness", "Description": "Health supplements and wellness products"},
-    {"CategoryID": 10, "CategoryName": "Appliances", "Description": "Home appliances for convenience"},
-    {"CategoryID": 11, "CategoryName": "Jewelry and Accessories", "Description": "Elegant jewelry and fashion accessories"},
-    {"CategoryID": 12, "CategoryName": "Food and Beverages", "Description": "Delicious food and beverage items"},
-    {"CategoryID": 13, "CategoryName": "Office Supplies", "Description": "Stationery and office essentials"},
-    {"CategoryID": 14, "CategoryName": "Pet Supplies", "Description": "Products for your furry friends"},
-    {"CategoryID": 15, "CategoryName": "Garden and Outdoor Living", "Description": "Gardening tools and outdoor decor"}
-    ]
+        {"id": 1, "name": "Electronics", 'description': "Latest gadgets and tech accessories"},
+        {"id": 2, "name": "Clothing", 'description': "Fashionable apparel for all occasions"},
+        {"id": 3, "name": "Home and Furniture", 'description': "Stylish and functional home decor"},
+        {"id": 4, "name": "Sports and Outdoors", 'description': "Equipment for sports and outdoor activities"},
+        {"id": 5, "name": "Books and Literature", 'description': "A wide range of books for all interests"},
+        {"id": 6, "name": "Beauty and Personal Care", 'description': "Skincare, cosmetics, and personal care products"},
+        {"id": 7, "name": "Toys and Games", 'description': "Fun and educational toys and games"},
+        {"id": 8, "name": "Automotive", 'description': "Car accessories and maintenance products"},
+        {"id": 9, "name": "Health and Wellness", 'description': "Health supplements and wellness products"},
+        {"id": 10, "name": "Appliances", 'description': "Home appliances for convenience"},
+        {"id": 11, "name": "Jewelry and Accessories", 'description': "Elegant jewelry and fashion accessories"},
+        {"id": 12, "name": "Food and Beverages", 'description': "Delicious food and beverage items"},
+        {"id": 13, "name": "Office Supplies", 'description': "Stationery and office essentials"},
+        {"id": 14, "name": "Pet Supplies", 'description': "Products for your furry friends"},
+        {"id": 15, "name": "Garden and Outdoor Living", 'description': "Gardening tools and outdoor decor"}
+        ]
     return render_template('categories.html', categories = categories)
 
 # @app.route
