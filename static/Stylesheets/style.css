@@ -30,6 +30,12 @@ h6 { font-size: 1.25rem; }
     border-bottom: 1px solid gray;
     overflow: hidden;
     display: flex;
+    justify-content: space-between;
+    align-items: center; 
+}
+
+#navbar img {
+    margin-left: auto;
 }
 
 a:hover {
