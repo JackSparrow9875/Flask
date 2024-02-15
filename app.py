@@ -2,15 +2,33 @@ from flask import Flask, render_template, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
-import sqlite3
+#import sqlite3
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+
 
 app = Flask(__name__)
 
 #secret key
 app.config['SECRET_KEY'] = "secret_key@123"
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/NovaCart.db'
+#adding database
+db = SQLAlchemy(app)
 
+#defining the model
+class User(db.Model):
+    __tablename__ = 'Users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(100), unique=True, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Name %r>' %self.name
+    
 class UserForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
     email = StringField("Enter your email", validators=[DataRequired()])
@@ -23,41 +41,8 @@ def index():
 
 @app.route('/user/<name>')
 def user(name):
-    return render_template('user.html',name=name)
+    return render_template('user.html', name=name)
 
-@app.route('/user_signup', methods=["GET", "POST"])
-def usersignupform():
-    name = None
-    email = None
-    form = UserForm()
-    #validating the form
-    if form.validate_on_submit():
-        name = form.name.data
-        email = form.email.data
-        con = sqlite3.connect('NovaCart.db')
-        cur = con.cursor()
-        cur.execute("SELECT * FROM Users WHERE Email=?", (email,))
-        existing_user = cur.fetchone()
-        if existing_user:
-            flash('User already exists')
-        else:
-            cur.execute("INSERT INTO Users(Name, Email) Values (?,?)", (name, email))
-            con.commit()
-            flash('Signup Successful!')
-        con.close()
-        form.name.data = ''
-        form.email.data = ''
-    
-    return render_template('usersignup.html', name=name, email=email, form=form)
-
-@app.route('/userslist')
-def userslist():
-    con = sqlite3.connect('NovaCart.db')
-    cur = con.cursor()
-    cur.execute('''SELECT * FROM Users''')
-    users = cur.fetchall()
-    con.close()
-    return render_template('userlist.html', users=users)
 
 #ERROR HANDLING
 @app.errorhandler(404)
@@ -72,6 +57,8 @@ def internal_server_error(e):
 def invalid_method(e):
     return render_template('405.html'), 405
 
+with app.app_context():
+    db.create_all()
 
 if __name__ == "__main__":
     app.run(debug=True)
