@@ -1,15 +1,7 @@
-import mysql.connector
+import sqlite3
 
-my_db = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    passwd='root'
-)
+con = sqlite3.connect('NovaCart.db')
+cur = con.cursor()
 
-cur = my_db.cursor()
-
-cur.execute("CREATE DATABASE NovaCart")
-
-cur.execute("SHOW DATABASES")
-for db in cur:
-    print(db)
+con.execute("CREATE TABLE Users(Name TEXT, Email TEXT, Password TEXT)")
+cur.close()
