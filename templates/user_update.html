@@ -1,5 +1,36 @@
 {% extends 'base.html' %}
 
+{% block title %} Update User Details {% endblock %}
+
 {% block content %}
-    
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Hey {{ updated_name }} - {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>    
+    {% endfor %}
+
+    {% if updated_name or updated_email or updated_color %}
+        <h1>Hello {{ updated_name }}!!</h1>
+    {% else %}
+        <h1>User Data Update Form for User ID: {{ user_id }}</h1>
+        <br/>
+        <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                {{ form.updated_name.label(class="form-label") }}
+                {{ form.updated_name(class="form-control") }}
+                <br/>
+                {{ form.updated_email.label(class="form-label") }}
+                {{ form.updated_email(class="form-control") }}
+                <br/>
+                {{ form.updated_color.label(class="form-label") }}
+                {{ form.updated_color(class="form-control") }}
+                <br/>
+                {{ form.submit(class="btn btn-primary") }}
+            </form>
+        </div>
+    {% endif %}
+
 {% endblock %}

@@ -13,13 +13,17 @@ app.config['SECRET_KEY'] = "secret_key@123"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite3:///NovaCart.db'
 
 
-
 class UserForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
     email = StringField("Enter your email", validators=[DataRequired()])
     fav_color = StringField("What is you favrouite color?", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
+class UpdateUserForm(FlaskForm):
+    updated_name = StringField("What is new your name?", validators=[DataRequired()])
+    updated_email = StringField("Enter your new email", validators=[DataRequired()])
+    updated_color = StringField("What is you new favrouite color?", validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 def get_cursor():
     con = sqlite3.connect('NovaCart.db')
@@ -56,37 +60,29 @@ def add_user():
         finally:
             if con:
                 con.close()
-    
     return render_template('usersignup.html', form=form)
 
-
-# @app.route('/update/<int:id>', methods=['GET', 'POST'])
-# def update(id):
-#     form = UserForm()
-#     con, cur = get_cursor()
-#     cur.execute("SELECT * FROM Users WHERE id=?", (id,))
-#     user = cur.fetchone()
-#     if user is None:
-#         flash('Error! User does not exist')
-    
-#     if request.method == 'POST' and form.validate_on_submit():
-#         name = form.name.data
-#         email = form.email.data
-#         try:
-#             cur.execute('''UPDATE Users SET Name=?, Email=? WHERE id=?''', (name,email,id))
-#             con.commit()
-#             flash('User information updated successfully!')
-#             return render_template('update_user.html', form=form)
-#         except sqlite3.Error as e:
-#             flash(f'An error occurred: {str(e)}')
-#         finally:
-#             if con:
-#                 con.close()
-#     elif request.method == 'GET':
-#         form.name.data = user[1]
-#         form.email.data = user[2]
-#         form.password1.data = user[3]
-#     return render_template('update_user.html', form=form, id=id)
+@app.route('/update/<int:user_id>', methods=['GET', 'POST'])
+def user_update(user_id):
+    form = UpdateUserForm()
+    updated_name = None
+    updated_email = None
+    updated_color = None
+    if request.method == 'POST' and form.validate_on_submit():
+        updated_name = form.updated_name.data
+        updated_email = form.updated_email.data
+        updated_color = form.updated_color.data
+        try:
+            con, cur = get_cursor()
+            cur.execute('''UPDATE Users SET Name=?, Email=?, Fav_Color=? WHERE id=?''', (updated_name, updated_email, updated_color, user_id))
+            con.commit()
+            flash('User details updated successfully!')
+        except sqlite3.Error as e:
+            flash(f'An error occurred: {str(e)}')
+        finally:
+            if con:
+                con.close()
+    return render_template('user_update.html', form=form, updated_name=updated_name, user_id=user_id)
 
 @app.route('/user_list')
 def userlist():
@@ -100,6 +96,7 @@ def userlist():
     finally:
         if con:
             con.close()
+
 
 #ERROR HANDLING
 @app.errorhandler(404)
