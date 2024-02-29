@@ -17,8 +17,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite3:///NovaCart.db'
 class UserForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
     email = StringField("Enter your email", validators=[DataRequired()])
-    password1 = PasswordField("Enter your password", validators=[DataRequired()])
-    password2 = PasswordField("Re-enter your password", validators=[DataRequired()])
+    fav_color = StringField("What is you favrouite color?", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 
@@ -41,56 +40,53 @@ def add_user():
     form = UserForm()
     name = None
     email = None
-    password = None
+    fav_color = None
     if form.validate_on_submit():
-        if form.password1.data == form.password2.data:
-            name = form.name.data
-            email = form.email.data
-            password = form.password1.data
-            try:
-                con, cur = get_cursor()
-                cur.execute('''INSERT INTO Users(Name, Email, Password) VALUES (?,?,?)''', (name,email,password))
-                con.commit()
-                flash('User added successfully!')
-                return redirect(url_for('user', name=name))
-            except sqlite3.Error as e:
-                flash(f'An error occured: {str(e)}')
-            finally:
-                if con:
-                    con.close()
-        else:
-            flash("Passwords donot match, please try again")
+        name = form.name.data
+        email = form.email.data
+        fav_color = form.fav_color.data
+        try:
+            con, cur = get_cursor()
+            cur.execute('''INSERT INTO Users(Name, Email, Fav_Color) VALUES (?,?,?)''', (name,email,fav_color))
+            con.commit()
+            flash('User added successfully!')
+            return redirect(url_for('user', name=name))
+        except sqlite3.Error as e:
+            flash(f'An error occured: {str(e)}')
+        finally:
+            if con:
+                con.close()
     
     return render_template('usersignup.html', form=form)
 
 
-@app.route('/update/<int:id>', methods=['GET', 'POST'])
-def update(id):
-    form = UserForm()
-    con, cur = get_cursor()
-    cur.execute("SELECT * FROM Users WHERE id=?", (id,))
-    user = cur.fetchone()
-    if user is None:
-        flash('Error! User does not exist')
+# @app.route('/update/<int:id>', methods=['GET', 'POST'])
+# def update(id):
+#     form = UserForm()
+#     con, cur = get_cursor()
+#     cur.execute("SELECT * FROM Users WHERE id=?", (id,))
+#     user = cur.fetchone()
+#     if user is None:
+#         flash('Error! User does not exist')
     
-    if request.method == 'POST' and form.validate_on_submit():
-        name = form.name.data
-        email = form.email.data
-        try:
-            cur.execute('''UPDATE Users SET Name=?, Email=? WHERE id=?''', (name,email,id))
-            con.commit()
-            flash('User information updated successfully!')
-            return render_template('update_user.html', form=form)
-        except sqlite3.Error as e:
-            flash(f'An error occurred: {str(e)}')
-        finally:
-            if con:
-                con.close()
-    elif request.method == 'GET':
-        form.name.data = user[1]
-        form.email.data = user[2]
-        form.password1.data = user[3]
-    return render_template('update_user.html', form=form, id=id)
+#     if request.method == 'POST' and form.validate_on_submit():
+#         name = form.name.data
+#         email = form.email.data
+#         try:
+#             cur.execute('''UPDATE Users SET Name=?, Email=? WHERE id=?''', (name,email,id))
+#             con.commit()
+#             flash('User information updated successfully!')
+#             return render_template('update_user.html', form=form)
+#         except sqlite3.Error as e:
+#             flash(f'An error occurred: {str(e)}')
+#         finally:
+#             if con:
+#                 con.close()
+#     elif request.method == 'GET':
+#         form.name.data = user[1]
+#         form.email.data = user[2]
+#         form.password1.data = user[3]
+#     return render_template('update_user.html', form=form, id=id)
 
 @app.route('/user_list')
 def userlist():
