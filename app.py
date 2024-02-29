@@ -65,6 +65,13 @@ def add_user():
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
 def user_update(user_id):
     form = UpdateUserForm()
+    con, cur = get_cursor()
+    cur.execute('''SELECT * FROM Users WHERE ID = ?''', (user_id,))
+    user = cur.fetchone()
+    name_placeholder = user[1]
+    email_placeholder = user[2]
+    color_placeholder = user[3]
+    con.close()
     updated_name = None
     updated_email = None
     updated_color = None
@@ -82,7 +89,8 @@ def user_update(user_id):
         finally:
             if con:
                 con.close()
-    return render_template('user_update.html', form=form, updated_name=updated_name, user_id=user_id)
+    return render_template('user_update.html', form=form, updated_name=updated_name, user_id=user_id,
+                           prev_name = name_placeholder, prev_email = email_placeholder, prev_color = color_placeholder)
 
 @app.route('/user_list')
 def userlist():

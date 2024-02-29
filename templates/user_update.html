@@ -20,13 +20,13 @@
                 {{ form.hidden_tag() }}
 
                 {{ form.updated_name.label(class="form-label") }}
-                {{ form.updated_name(class="form-control") }}
+                {{ form.updated_name(class="form-control", value=prev_name) }}
                 <br/>
                 {{ form.updated_email.label(class="form-label") }}
-                {{ form.updated_email(class="form-control") }}
+                {{ form.updated_email(class="form-control", value=prev_email) }}
                 <br/>
                 {{ form.updated_color.label(class="form-label") }}
-                {{ form.updated_color(class="form-control") }}
+                {{ form.updated_color(class="form-control", value=prev_color) }}
                 <br/>
                 {{ form.submit(class="btn btn-primary") }}
             </form>
