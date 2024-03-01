@@ -2,7 +2,7 @@ from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
-from flask_migrate import M
+from flask_migrate import Migrate
 import sqlite3
 from datetime import datetime
 
@@ -18,6 +18,8 @@ class UserForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
     email = StringField("Enter your email", validators=[DataRequired()])
     fav_color = StringField("What is you favrouite color?", validators=[DataRequired()])
+    password1 = PasswordField("Enter your password", validators=[DataRequired()])
+    password2 = PasswordField("Renter your password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 class UpdateUserForm(FlaskForm):
@@ -46,21 +48,29 @@ def add_user():
     name = None
     email = None
     fav_color = None
+    password1 = None
+    password2 = None
     if form.validate_on_submit():
         name = form.name.data
         email = form.email.data
         fav_color = form.fav_color.data
-        try:
-            con, cur = get_cursor()
-            cur.execute('''INSERT INTO Users(Name, Email, Fav_Color) VALUES (?,?,?)''', (name,email,fav_color))
-            con.commit()
-            flash('User added successfully!')
-            return redirect(url_for('user', name=name))
-        except sqlite3.Error as e:
-            flash(f'An error occured: {str(e)}')
-        finally:
-            if con:
-                con.close()
+        password1 = form.password1.data
+        password2 = form.password2.data
+        if password1 == password2:
+            password = password1
+            try:
+                con, cur = get_cursor()
+                cur.execute('''INSERT INTO Users(Name, Email, Fav_Color, Password) VALUES (?,?,?,?)''', (name,email,fav_color,password))
+                con.commit()
+                flash('User added successfully!')
+                return redirect(url_for('user', name=name))
+            except sqlite3.Error as e:
+                flash(f'An error occured: {str(e)}')
+            finally:
+                if con:
+                    con.close()
+        else:
+            flash('Oops! Passwords entered donot match, please try again...')
     return render_template('usersignup.html', form=form)
 
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
@@ -92,12 +102,6 @@ def user_update(user_id):
                 con.close()
     return render_template('user_update.html', form=form, updated_name=updated_name, user_id=user_id,
                            prev_name = name_placeholder, prev_email = email_placeholder, prev_color = color_placeholder)
-
-@app.route('/delete/<int:user_id>', methods=['GET', 'POST'])
-def delete_user(user_id):
-    con, cur = get_cursor()
-    cur.execute('''SELECT * FROM Users WHERE ID = ?''', (user_id,))
-    user = cur.fetchone()
 
 @app.route('/user_list')
 def userlist():
