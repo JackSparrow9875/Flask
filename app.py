@@ -57,7 +57,7 @@ def add_user():
         password1 = form.password1.data
         password2 = form.password2.data
         if password1 == password2:
-            password = password1
+            password = generate_password_hash(password1)
             try:
                 con, cur = get_cursor()
                 cur.execute('''INSERT INTO Users(Name, Email, Fav_Color, Password) VALUES (?,?,?,?)''', (name,email,fav_color,password))
