@@ -28,9 +28,9 @@
                 {{ form.updated_color.label(class="form-label") }}
                 {{ form.updated_color(class="form-control", value=prev_color) }}
                 <br/>
+                <!-- NOTE: Not updating the password here -->
                 {{ form.submit(class="btn btn-primary") }}
             </form>
-        </div>
+        </div>    
     {% endif %}
-
 {% endblock %}

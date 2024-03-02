@@ -2,10 +2,9 @@ from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 import sqlite3
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
