@@ -5,10 +5,11 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "secret_key@123"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///NovaCart.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'your_secret_key'
 
 db = SQLAlchemy(app)
 
@@ -17,7 +18,10 @@ class User(db.Model):
     name = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True)
     fav_color = db.Column(db.String(50))
-    _password = db.Column(db.String(128))
+    hashed_password = db.Column(db.String(128))
+
+    def __repr__(self):
+        return f"<User {self.name}>"
 
     @property
     def password(self):
@@ -25,10 +29,11 @@ class User(db.Model):
 
     @password.setter
     def password(self, password):
-        self._password = generate_password_hash(password)
+        self.hashed_password = generate_password_hash(password)
 
     def verify_password(self, password):
-        return check_password_hash(self._password, password)
+        return check_password_hash(self.hashed_password, password)
+
 
 class UserForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
@@ -44,6 +49,8 @@ class UpdateUserForm(FlaskForm):
     updated_color = StringField("What is your new favorite color?")
     submit = SubmitField("Submit")
 
+
+#DEFINING ROUTES AND VIEWS
 @app.route('/')
 def index():
     return render_template('home.html')
@@ -64,7 +71,7 @@ def add_user():
         if password1 == password2:
             password = generate_password_hash(password1)
             try:
-                new_user = User(name=name, email=email, fav_color=fav_color, _password=password)
+                new_user = User(name=name, email=email, fav_color=fav_color, hashed_password=password)
                 db.session.add(new_user)
                 db.session.commit()
                 flash('User added successfully!')
@@ -74,6 +81,7 @@ def add_user():
         else:
             flash('Passwords do not match, please try again...')
     return render_template('usersignup.html', form=form)
+
 
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
 def user_update(user_id):
@@ -95,6 +103,7 @@ def userlist():
     users = User.query.all()
     return render_template('userlist.html', users=users)
 
+# Error handlers
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -106,6 +115,7 @@ def internal_server_error(e):
 @app.errorhandler(405)
 def invalid_method(e):
     return render_template('405.html'), 405
+
 
 if __name__ == "__main__":
     app.run(debug=True)
