@@ -2,7 +2,7 @@ from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, EqualTo, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
 
@@ -41,8 +41,8 @@ class UserForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
     email = StringField("Enter your email", validators=[DataRequired()])
     fav_color = StringField("What is your favorite color?", validators=[DataRequired()])
-    password1 = PasswordField("Enter your password", validators=[DataRequired()])
-    password2 = PasswordField("Re-enter your password", validators=[DataRequired()])
+    password = PasswordField("Enter your password", validators=[DataRequired()])
+    password2 = PasswordField("Confirm password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 class UpdateUserForm(FlaskForm):
@@ -68,12 +68,12 @@ def add_user():
         name = form.name.data
         email = form.email.data
         fav_color = form.fav_color.data
-        password1 = form.password1.data
+        password = form.password.data
         password2 = form.password2.data
-        if password1 == password2:
-            password = generate_password_hash(password1)
+        if password == password2:
+            hashed_password = generate_password_hash(password)
             try:
-                new_user = User(name=name, email=email, fav_color=fav_color, hashed_password=password)
+                new_user = User(name=name, email=email, fav_color=fav_color, hashed_password=hashed_password)
                 db.session.add(new_user)
                 db.session.commit()
                 flash('User added successfully!')

@@ -13,7 +13,7 @@
     {% if name and email %}
         <h1>Hello {{ name }}!!</h1>
     {% else %}
-        <h1>Enter you details to signup</h1>
+        <h1>Enter your Details to Signup for free..!</h1>
         <br/>
         <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
             <form method="POST">
@@ -28,8 +28,8 @@
                 {{ form.fav_color.label(class="form-label") }}
                 {{ form.fav_color(class="form-control") }}
                 <br/>
-                {{ form.password1.label(class="form-label") }}
-                {{ form.password1(class="form-control") }}
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
                 <br/>
                 {{ form.password2.label(class="form-label") }}
                 {{ form.password2(class="form-control") }}
