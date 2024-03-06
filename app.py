@@ -37,6 +37,12 @@ class User(db.Model):
         return check_password_hash(self.hashed_password, password)
 
 
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cat_name = db.Column(db.String(100), unique=True)
+    cat_description = db.Column(db.Text(1000))
+
+
 class UserForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
     email = StringField("Enter your email", validators=[DataRequired()])
