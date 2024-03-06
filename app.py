@@ -51,15 +51,35 @@ class UpdateUserForm(FlaskForm):
     updated_color = StringField("What is your new favorite color?")
     submit = SubmitField("Submit")
 
+class PasswordForm(FlaskForm):
+    email = StringField("Enter your registered email", validators=[DataRequired()])
+    password = PasswordField("Enter your password", validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 #DEFINING ROUTES AND VIEWS
 @app.route('/')
 def index():
     return render_template('home.html')
 
-@app.route('/user/<name>')
-def user(name):
-    return render_template('userdashboard.html', name=name)
+@app.route('/signin', methods=["GET", "POST"])
+def test_pw():
+    email = None
+    password = None
+    pw_to_check = None
+    passed = None
+    form = PasswordForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        #clearing the form
+        (form.email.data, form.password.data) = ("", "")
+        #lookup user by email address
+        pw_to_check = User.query.filter_by(email=email).first()
+        #check hashed password
+        passed = check_password_hash(pw_to_check.hashed_password, password)
+
+    return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check, passed=passed, form=form)
+
 
 @app.route('/user_signup', methods=['GET','POST'])
 def add_user():
