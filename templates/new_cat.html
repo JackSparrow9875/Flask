@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %} Add Category - NovaCart {% endblock %}
+
+{% block content %}
+    <h1>Add New Category</h1>
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.cat_name.label(class="form-label") }}
+            {{ form.cat_name(class="form-control") }}
+            <br/>
+            {{ form.cat_description.label(class="form-label") }}
+            {{ form.cat_description(class="form-control") }}
+            <br/>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>
+{% endblock %}

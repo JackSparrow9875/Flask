@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %} Category List - Novocart {% endblock %}
+
+{% block content %}
+    <h1>Category List</h1>
+    <br/>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.cat_name }}</td>
+                    <td>{{ category.cat_description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -68,6 +68,7 @@ class PasswordForm(FlaskForm):
 class NewCategory(FlaskForm):
     cat_name = StringField("Enter the name of the category", validators=[DataRequired()])
     cat_description = StringField("Category description", validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 
 #DEFINING ROUTES AND VIEWS
@@ -142,6 +143,30 @@ def userlist():
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
+
+@app.route('/admin/new_category', methods=['GET', 'POST'])
+def new_cat():
+    cat_name = None
+    cat_description = None
+    form = NewCategory()
+    if form.validate_on_submit():
+        cat_name = form.cat_name.data
+        cat_description = form.cat_description.data
+        try:
+            new_cat = Category(cat_name=cat_name, cat_description=cat_description)
+            db.session.add(new_cat)
+            db.session.commit()
+            flash('Catergory added successfully')
+            (cat_name, cat_description) = ('', '')
+        except Exception as e:
+            flash(f'An error encountered: {str(e)}')
+    return render_template('new_cat.html', form=form)
+
+@app.route('/admin/category_list')
+def category_list():
+    categories = Category.query.all()
+    return render_template('catlist.html', categories=categories)
+
 
 # Error handlers
 @app.errorhandler(404)
