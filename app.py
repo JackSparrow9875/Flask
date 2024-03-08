@@ -42,6 +42,9 @@ class Category(db.Model):
     cat_name = db.Column(db.String(100), unique=True)
     cat_description = db.Column(db.Text(1000))
 
+    def __repr__(self):
+        return f"<Category {self.cat_name}>"
+
 
 class UserForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
@@ -62,13 +65,18 @@ class PasswordForm(FlaskForm):
     password = PasswordField("Enter your password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
+class NewCategory(FlaskForm):
+    cat_name = StringField("Enter the name of the category", validators=[DataRequired()])
+    cat_description = StringField("Category description", validators=[DataRequired()])
+
+
 #DEFINING ROUTES AND VIEWS
 @app.route('/')
 def index():
     return render_template('home.html')
 
 @app.route('/signin', methods=["GET", "POST"])
-def test_pw():
+def signin():
     email = None
     password = None
     pw_to_check = None
@@ -130,6 +138,10 @@ def user_update(user_id):
 def userlist():
     users = User.query.all()
     return render_template('userlist.html', users=users)
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
 
 # Error handlers
 @app.errorhandler(404)
