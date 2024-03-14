@@ -1,0 +1,4 @@
+1) make changes so that if there is the string 'error' in flashed messages
+   it gets displyed in color red, else in color green
+2) have to make another table for items. as of now, I am thinking of having around
+   5 items per category. may increase it later

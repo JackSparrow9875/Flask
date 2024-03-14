@@ -3,11 +3,18 @@
 {% block title %} User Signup {% endblock %}
 
 {% block content %}
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        Hey {{ name }} - {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>    
+    {% for message in get_flashed_messages(with_categories=true) %}
+        {% if message[1] == 'success' %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message[0] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% elif message[1] == 'error' %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message[0] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
     {% endfor %}
 
     {% if name and email %}

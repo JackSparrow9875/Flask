@@ -112,12 +112,12 @@ def add_user():
                 new_user = User(name=name, email=email, fav_color=fav_color, hashed_password=hashed_password)
                 db.session.add(new_user)
                 db.session.commit()
-                flash('User added successfully!')
+                flash('User added successfully!', 'success')
                 return redirect(url_for('user', name=name))
             except Exception as e:
-                flash(f'An error occurred: {str(e)}')
+                flash(f'An error occurred: {str(e)}', 'error')
         else:
-            flash('Passwords do not match, please try again...')
+            flash('Passwords do not match, please try again...', 'error')
     return render_template('usersignup.html', form=form)
 
 
