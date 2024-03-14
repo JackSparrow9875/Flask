@@ -157,9 +157,11 @@ def new_cat():
             db.session.add(new_cat)
             db.session.commit()
             flash('Catergory added successfully')
-            (cat_name, cat_description) = ('', '')
         except Exception as e:
             flash(f'An error encountered: {str(e)}')
+        #clearing the form
+        form.cat_name.data = ""
+        form.cat_description.data = ""
     return render_template('new_cat.html', form=form)
 
 @app.route('/admin/category_list')
