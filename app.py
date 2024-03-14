@@ -89,10 +89,9 @@ def signin():
         password = form.password.data
         #clearing the form
         (form.email.data, form.password.data) = ("", "")
-
+        
         #lookup user by email address
         pw_to_check = User.query.filter_by(email=email).first()
-        
         #check hashed password
         passed = check_password_hash(pw_to_check.hashed_password, password)
 
