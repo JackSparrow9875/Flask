@@ -85,7 +85,7 @@ class NewCategory(FlaskForm):
 class NewItem(FlaskForm):
     item_name = StringField("Enter the name of the item to be added", validators=[DataRequired()])
     item_price = StringField("Price of the Item", validators=[DataRequired()])
-    date_added = DateField("From when is the item going to be available", validators=[DataRequired()])
+    date_added = DateField("From when is this Item going to be available", validators=[DataRequired()])
     availability = BooleanField("Current Availability", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
@@ -207,7 +207,7 @@ def add_item():
         form.item_price.data = ""
         form.date_added.data = ""
         form.availability.data = ""
-    return render_template("newitem.html")
+    return render_template("newitem.html", form=form)
 
 
 @app.route('/admin/category_list')
