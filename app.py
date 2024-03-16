@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, DateField, BooleanField
 from wtforms.validators import DataRequired, EqualTo, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
@@ -82,6 +82,12 @@ class NewCategory(FlaskForm):
     cat_description = StringField("Category description", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
+class NewItem(FlaskForm):
+    item_name = StringField("Enter the name of the item to be added", validators=[DataRequired()])
+    item_price = StringField("Price of the Item", validators=[DataRequired()])
+    date_added = DateField("From when is the item going to be available", validators=[DataRequired()])
+    availability = BooleanField("Current Availability", validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 #DEFINING ROUTES AND VIEWS
 @app.route('/')
@@ -99,7 +105,7 @@ def signin():
         email = form.email.data
         password = form.password.data
         #clearing the form
-        (form.email.data, form.password.data) = ("", "")
+        (form.email.data, form.password.data) = ("","")
         
         #lookup user by email address
         pw_to_check = User.query.filter_by(email=email).first()
@@ -178,10 +184,30 @@ def new_cat():
     return render_template('new_cat.html', form=form)
 
 
-# @app.route("/admin/add_items", methods=["GET", "POST"])
-# def add_item():
-#     item_name = None
-#     item_
+@app.route("/admin/add_items", methods=["GET", "POST"])
+def add_item():
+    item_name = None
+    item_price = None
+    date_added = None
+    available = None
+    form = NewItem()
+    if form.validate_on_submit():
+        item_name = form.item_name.data
+        item_price = form.item_price.data
+        date_added = form.date_added.data
+        available = form.availability.data
+        try:
+            new_item = Items(item_name=item_name, item_price=item_price, date_added=date_added, available=available)
+            db.session.add(new_item)
+            db.session.commit()
+            flash("New Item added successfully")
+        except Exception as e:
+            flash(f"An error encountered: {str(e)}")
+        form.item_name.data = ""
+        form.item_price.data = ""
+        form.date_added.data = ""
+        form.availability.data = ""
+    return render_template("newitem.html")
 
 
 @app.route('/admin/category_list')
