@@ -30,15 +30,11 @@
             {{ form.date_added.label(class="form-label") }}
             {{ form.date_added(class="form-control") }}
             <br/>
-            {{ form.availability.label(class="form-check-label") }}
-            <div class="form-check">
-                {{ form.availability(value="True", class="form-check-input") }}
-                <label class="form-check-label" for="{{ form.availability.id }}">True</label>
-            </div>
-            <div class="form-check">
-                {{ form.availability(value="False", class="form-check-input") }}
-                <label class="form-check-label" for="{{ form.availability.id }}">False</label>
-            </div>
+            {{ form.availability.label(class="form-label") }}
+            <select class="form-select" id="{{ form.availability.id }}" name="{{ form.availability.name }}">
+                <option value="True">Yes</option>
+                <option value="False">No</option>
+            </select>
             <br/>
             {{ form.submit(class="btn btn-primary") }}
         </form>

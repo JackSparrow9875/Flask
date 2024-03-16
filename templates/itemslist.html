@@ -22,7 +22,13 @@
                     <td>{{ item.item_name }}</td>
                     <td>{{ item.item_price }}</td>
                     <td>{{ item.date_added }}</td>
-                    <td>{{ item.availability }}</td>
+                    <td>
+                        {% if item.availability %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
