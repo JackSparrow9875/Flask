@@ -5,7 +5,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 app = Flask(__name__)
@@ -42,9 +42,21 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cat_name = db.Column(db.String(100), unique=True)
     cat_description = db.Column(db.Text(1000))
+    date_added = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    available = db.Column(db.Boolean, default=True)
 
     def __repr__(self):
         return f"<Category {self.cat_name}>"
+    
+
+class Items(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    item_name = db.Column(db.String(100), unique=True)
+    item_price = db.Column(db.Integer)
+
+
+    def __repr__(self):
+        return f"<Item {self.item_name}"
 
 
 class UserForm(FlaskForm):
