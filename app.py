@@ -42,8 +42,6 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cat_name = db.Column(db.String(100), unique=True)
     cat_description = db.Column(db.Text(1000))
-    date_added = db.Column(db.DateTime, default=datetime.now(timezone.utc))
-    available = db.Column(db.Boolean, default=True)
 
     def __repr__(self):
         return f"<Category {self.cat_name}>"
@@ -53,10 +51,11 @@ class Items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item_name = db.Column(db.String(100), unique=True)
     item_price = db.Column(db.Integer)
-
+    date_added = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    available = db.Column(db.Boolean, default=True)
 
     def __repr__(self):
-        return f"<Item {self.item_name}"
+        return f"<Item {self.item_name}; Price: {self.item_price}; Available: {self.available}"
 
 
 class UserForm(FlaskForm):
@@ -177,6 +176,13 @@ def new_cat():
         form.cat_name.data = ""
         form.cat_description.data = ""
     return render_template('new_cat.html', form=form)
+
+
+# @app.route("/admin/add_items", methods=["GET", "POST"])
+# def add_item():
+#     item_name = None
+#     item_
+
 
 @app.route('/admin/category_list')
 def category_list():
