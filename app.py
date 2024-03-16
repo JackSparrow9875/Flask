@@ -209,11 +209,16 @@ def add_item():
         form.availability.data = ""
     return render_template("newitem.html", form=form)
 
-
 @app.route('/admin/category_list')
 def category_list():
     categories = Category.query.all()
     return render_template('catlist.html', categories=categories)
+
+#Listing the Items that have been added so far
+@app.route("/item_list", methods=["GET", "POST"])
+def item_list():
+    items = Items.query.all()
+    return render_template('itemslist.html', items=items)
 
 
 # Error handlers

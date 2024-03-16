@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %} Items List - Novocart {% endblock %}
+
+{% block content %}
+    <h1>Items List</h1>
+    <br/>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Date Added</th>
+                <th>Current Availability</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.item_name }}</td>
+                    <td>{{ item.item_price }}</td>
+                    <td>{{ item.date_added }}</td>
+                    <td>{{ item.availability }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
