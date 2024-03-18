@@ -56,23 +56,30 @@
         </button>
     </div>
     <br/><br><br>
-    <h2>Browse by items...</h2><br>
-    {% for item in items %}
-    <div class="shadow p-3 mb-5 bg-body rounded">
-        <h4>{{ item.item_name }}</h4>
-        Price:                  {{ item.item_price }}<br>
-        Date added:             {{ item.date_added }}<br>
-        Current Availability:   {{ item.available }}<br>
-    </div><br>
-    {% endfor %}
-
-    <br/>
-    <h2>Browse by category...</h2><br>
-    {% for category in categories %}
-    <div class="shadow p-3 mb-5 bg-body rounded">
-        <h4>{{ category.cat_name }}</h4>
-        {{ category.cat_description }}
-    </div><br>
-    {% endfor %}
+    <section>
+        <h2>Browse by items...</h2><br/>
+        {% for item in items %}
+        <div class="shadow p-3 mb-5 bg-body rounded">
+        <article class="item">
+            <h4>{{ item.item_name }}</h4>
+            <p>Price: {{ item.item_price }}</p>
+            <p>Date added: {{ item.date_added }}</p>
+            <p>Current Availability: {{ item.available }}</p>
+        </article>
+        </div><br/>
+        {% endfor %}
+    </section>
+    
+    <section>
+        <h2>Browse by category...</h2><br/>
+        {% for category in categories %}
+        <div class="shadow p-3 mb-5 bg-body rounded">
+        <article class="category">
+            <h4>{{ category.cat_name }}</h4>
+            <p>{{ category.cat_description }}</p>
+        </article>
+        </div><br/>
+        {% endfor %}
+    </section>
 
 {% endblock %}
