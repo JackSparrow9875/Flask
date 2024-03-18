@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, DateField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, DateField, SelectField
 from wtforms.validators import DataRequired, EqualTo, Length
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
@@ -86,8 +86,9 @@ class NewItem(FlaskForm):
     item_name = StringField("Enter the name of the item to be added", validators=[DataRequired()])
     item_price = StringField("Price of the Item", validators=[DataRequired()])
     date_added = DateField("From when is this Item going to be available", validators=[DataRequired()])
-    availability = BooleanField("Current Availability", validators=[DataRequired()])
+    availability = SelectField("Current Availability", choices=[('True', 'Yes'),('False', 'No')], validators=[DataRequired()])
     submit = SubmitField("Submit")
+
 
 #DEFINING ROUTES AND VIEWS
 @app.route('/')
@@ -195,7 +196,7 @@ def add_item():
         item_name = form.item_name.data
         item_price = form.item_price.data
         date_added = form.date_added.data
-        available = form.availability.data
+        available = form.availability.data == 'True'
         try:
             new_item = Items(item_name=item_name, item_price=item_price, date_added=date_added, available=available)
             db.session.add(new_item)
