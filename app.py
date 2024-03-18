@@ -93,6 +93,7 @@ class NewItem(FlaskForm):
 #DEFINING ROUTES AND VIEWS
 @app.route('/')
 def index():
+    
     return render_template('home.html')
 
 @app.route('/signin', methods=["GET", "POST"])
