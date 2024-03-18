@@ -1,5 +1,6 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql.expression import func
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, DateField, SelectField
 from wtforms.validators import DataRequired, EqualTo, Length
@@ -93,8 +94,9 @@ class NewItem(FlaskForm):
 #DEFINING ROUTES AND VIEWS
 @app.route('/')
 def index():
-    
-    return render_template('home.html')
+    items = Items.query.order_by(func.random()).limit(5).all()
+    categories = Category.query.order_by(func.random()).limit(5).all()
+    return render_template('home.html', items=items, categories=categories)
 
 @app.route('/signin', methods=["GET", "POST"])
 def signin():
