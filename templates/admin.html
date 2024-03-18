@@ -4,4 +4,12 @@
 
 {% block content %}
     <h1>This is the Admin Page</h1>
+    <br/><br/><br/>
+    <li>
+        <a href="{{ url_for('category_list') }}">Category List</a>
+    </li>
+    <br/>
+    <li>
+        <a href="{{ url_for('item_list') }}">Item List</a>
+    </li> 
 {% endblock %}
