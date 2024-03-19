@@ -2,10 +2,13 @@ from flask import Flask, render_template, flash, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, DateField, SelectField
 from wtforms.validators import DataRequired, EqualTo, Length
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
+import os
 from datetime import datetime, timezone
 
 
@@ -54,6 +57,7 @@ class Items(db.Model):
     item_price = db.Column(db.Integer)
     date_added = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     available = db.Column(db.Boolean, default=True)
+    item_img = db.Column(db.String)
 
     def __repr__(self):
         return f"<Item {self.item_name}; Price: {self.item_price}; Available: {self.available}"
@@ -83,13 +87,25 @@ class NewCategory(FlaskForm):
     cat_description = StringField("Category description", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
+class UpdateCat(FlaskForm):
+    update_cat_name = StringField("Enter the updated name of the category")
+    update_cat_desp = StringField("Updated category description")
+    submit = SubmitField("Submit")
+
 class NewItem(FlaskForm):
     item_name = StringField("Enter the name of the item to be added", validators=[DataRequired()])
     item_price = StringField("Price of the Item", validators=[DataRequired()])
     date_added = DateField("From when is this Item going to be available", validators=[DataRequired()])
     availability = SelectField("Current Availability", choices=[('True', 'Yes'),('False', 'No')], validators=[DataRequired()])
+    item_img = FileField('Upload Item Image', validators=[FileAllowed(['jpg','png']), DataRequired()])
     submit = SubmitField("Submit")
 
+class UpdateItem(FlaskForm):
+    update_item_name = StringField("Updated name of the item")
+    update_item_price = StringField("Updated price of the item")
+    update_availability = SelectField("Change availability", choices=[('True', 'Yes'), ('False','No')])
+    update_item_img = FileField('Update the item image', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField("Submit")
 
 #DEFINING ROUTES AND VIEWS
 @app.route('/')
@@ -167,6 +183,7 @@ def userlist():
 def admin():
     return render_template('admin.html')
 
+#CATEGORIES
 @app.route('/admin/new_category', methods=['GET', 'POST'])
 def new_cat():
     cat_name = None
@@ -187,21 +204,37 @@ def new_cat():
         form.cat_description.data = ""
     return render_template('new_cat.html', form=form)
 
+@app.route('/admin/category_list')
+def category_list():
+    categories = Category.query.all()
+    return render_template('catlist.html', categories=categories)
 
+@app.route('/admin/udpate_category', methods=['GET','POST'])
+def update_cat(cat_id):
+    form = UpdateCat()
+    return render_template('update_cat.html')
+
+
+#ITEMS
 @app.route("/admin/add_items", methods=["GET", "POST"])
 def add_item():
     item_name = None
     item_price = None
     date_added = None
     available = None
+    item_img = None
     form = NewItem()
     if form.validate_on_submit():
         item_name = form.item_name.data
         item_price = form.item_price.data
         date_added = form.date_added.data
         available = form.availability.data == 'True'
+        item_img = form.item_img.data
+
+        filename = secure_filename(item_img.filename)
+        item_img.save(os.path.join('./static/Images/', filename))
         try:
-            new_item = Items(item_name=item_name, item_price=item_price, date_added=date_added, available=available)
+            new_item = Items(item_name=item_name, item_price=item_price, date_added=date_added, available=available, item_img=filename)
             db.session.add(new_item)
             db.session.commit()
             flash("New Item added successfully")
@@ -211,12 +244,9 @@ def add_item():
         form.item_price.data = ""
         form.date_added.data = ""
         form.availability.data = ""
+        form.item_img.data = ""
     return render_template("newitem.html", form=form)
 
-@app.route('/admin/category_list')
-def category_list():
-    categories = Category.query.all()
-    return render_template('catlist.html', categories=categories)
 
 #Listing the Items that have been added so far
 @app.route("/item_list", methods=["GET", "POST"])

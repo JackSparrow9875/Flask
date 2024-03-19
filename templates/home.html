@@ -65,11 +65,12 @@
             <p>Price: {{ item.item_price }}</p>
             <p>Date added: {{ item.date_added }}</p>
             <p>Current Availability: {{ item.available }}</p>
+            <button type="button" class="btn btn-primary">Browse Item..</button>
         </article>
         </div><br/>
         {% endfor %}
     </section>
-    
+    <br/>
     <section>
         <h2>Browse by category...</h2><br/>
         {% for category in categories %}
