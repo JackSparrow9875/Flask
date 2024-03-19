@@ -209,10 +209,19 @@ def category_list():
     categories = Category.query.all()
     return render_template('catlist.html', categories=categories)
 
-@app.route('/admin/udpate_category', methods=['GET','POST'])
+@app.route('/admin/udpate_category/<int:cat_id>', methods=['GET','POST'])
 def update_cat(cat_id):
     form = UpdateCat()
-    return render_template('update_cat.html')
+    cat = Category.query.get_or_404(cat_id)
+    if request.method == 'POST' and form.validate_on_submit():
+        cat.cat_name = form.update_cat_name.data
+        cat.cat_description = form.update_cat_desp.data
+        try:
+            db.session.commit()
+            flash(f'Category {cat.cat_name} has been updated successfully!')
+        except Exception as e:
+            flash(f'An error occured: {str(e)}')
+    return render_template('update_cat.html', form=form, cat=cat)
 
 
 #ITEMS
@@ -248,11 +257,27 @@ def add_item():
     return render_template("newitem.html", form=form)
 
 
-#Listing the Items that have been added so far
 @app.route("/item_list", methods=["GET", "POST"])
 def item_list():
     items = Items.query.all()
     return render_template('itemslist.html', items=items)
+
+
+@app.route('/admin/update_item/<int:item_id>', methods=['GET','POST'])
+def update_item(item_id):
+    form = UpdateItem()
+    item = Items.query.get_or_404(item_id)
+    if request.method == 'POST' and form.validate_on_submit():
+        item.item_name = form.update_item_name.data
+        item.item_price = form.update_item_price.data
+        item.available = form.update_availability.data
+        item.item_img = form.update_item_img.data
+        try:
+            db.session.commit()
+            flash(f'{item.item_name}\'s details have been updated successfully!')
+        except Exception as e:
+            flash(f'An error occured: {str(e)}')
+    return render_template('', form=form, item=item)
 
 
 # Error handlers
