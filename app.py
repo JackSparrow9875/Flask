@@ -210,21 +210,26 @@ def category_list():
     return render_template('catlist.html', categories=categories)
 
 @app.route('/admin/udpate_category/<int:cat_id>', methods=['GET','POST'])
-def update_cat(cat_id):
+def update_cat():
     #selecting all the categories
     categories = Category.query.all()
 
-    form = UpdateCat()
-    cat = Category.query.get_or_404(cat_id)
-    if request.method == 'POST' and form.validate_on_submit():
-        cat.cat_name = form.update_cat_name.data
-        cat.cat_description = form.update_cat_desp.data
-        try:
-            db.session.commit()
-            flash(f'Category {cat.cat_name} has been updated successfully!')
-        except Exception as e:
-            flash(f'An error occured: {str(e)}')
-    return render_template('update_cat.html', form=form, cat=cat, categories=categories)
+    if request.method=="POST":
+        cat_id = request.form.get('cat_id')
+        cat = Category.query.get_or_404(cat_id)
+        form = UpdateCat()
+        if request.method == 'POST' and form.validate_on_submit():
+            cat.cat_name = form.update_cat_name.data
+            cat.cat_description = form.update_cat_desp.data
+            try:
+                db.session.commit()
+                flash(f'Category {cat.cat_name} has been updated successfully!')
+            except Exception as e:
+                flash(f'An error occured: {str(e)}')
+        return render_template('update_cat.html', form=form, cat=cat, categories=categories)
+    else:
+        form = UpdateCat()
+        return render_template('update_cat.html', form, categories=categories) 
 
 
 #ITEMS

@@ -16,15 +16,15 @@
     <br/>
     <li>
     Want to update a category details?<br/>
-    Select the catgory name..
-    <form action="{{ url_for('update_cat') }}" method="POST">
+    Select the category name..
+    <form action="{{ url_for('update_cat', cat_id=selected_cat_id) }}" method="POST">
         <select name="cat_id">
             {% for category in categories %}
                 <option value="{{ category.id }}">{{ category.cat_name }}</option>
             {% endfor %}
         </select>
         <input type="submit" value="Update Category">
-    </form>
+    </form>    
     </li>
     <br/>
     <li>
