@@ -1,13 +1,29 @@
-1) make changes so that if there is the string 'error' in flashed messages
-   it gets displyed in color red, else in color green
-   
-   DONE
+Aim:        Develop an app using the Flask module. The app is an
+            online grocery store and the name of the store is 'NovaCart'
 
-2) have to make another table for items. as of now, I am thinking of having around
-   5 items per category. may increase it later. we also have to link it with the
-   category table.
+Properties: (i) As of now, I have only considred upto three tables: 
+            Users, Categories(of the items), Items. Of course, more will
+            be needed (for storing items in cart, maybe)
+            (ii) It should have one admin, who can add new things, edit old things and
+            delete old things. So there is a seperate login page for the admin
+            (iii) Then there is also a user-login page. The user passwords are stored in
+            the Users table. The user can also change their details at any time.
+            (iv) In the hoempage of the app, there should be the user can either view the items randomly,
+            or also search for them on the basis of the Category of the items
+            (v) The three tables mentioned above have the following fields:
+                1) Name: User
+                   Fields: name, email, fav_color(used this for testing), hashed_password
+                2) Name: Category
+                   Fields: cat_name, cat_description
+                3) Name: Items
+                   Fields: item_name, item_price, date_added, available, item_img(to be displayed in the homepage and also the item-page)
+                NOTE: id is, of course, to be defined for each of the table
+            (vi) As of now, I have used a sqlite database SQLAlchemy as well for database
+            management. Whenever I had to make chages to the database, I use 'flask migrate' to update the
+            database as well
+            (vii) I also have a (currently) unuseable search box in the navbar. Maybe this could be used for
+            searching for items or categories by the user 
 
-   NOT YET DONE
+                    
 
-3) as of now, I have decided to make the shopping thing in the homepage only on the
-   basis of categories
+             
