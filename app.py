@@ -211,6 +211,9 @@ def category_list():
 
 @app.route('/admin/udpate_category/<int:cat_id>', methods=['GET','POST'])
 def update_cat(cat_id):
+    #selecting all the categories
+    categories = Category.query.all()
+
     form = UpdateCat()
     cat = Category.query.get_or_404(cat_id)
     if request.method == 'POST' and form.validate_on_submit():
@@ -221,7 +224,7 @@ def update_cat(cat_id):
             flash(f'Category {cat.cat_name} has been updated successfully!')
         except Exception as e:
             flash(f'An error occured: {str(e)}')
-    return render_template('update_cat.html', form=form, cat=cat)
+    return render_template('update_cat.html', form=form, cat=cat, categories=categories)
 
 
 #ITEMS
