@@ -58,34 +58,18 @@ class Items(db.Model):
 
 
 #DEFINING ROUTES AND VIEWS
+
+#-------------------FUNCTIONALITY---------------------
 @app.route('/')
 def index():
     items = Items.query.order_by(func.random()).limit(5).all()
     categories = Category.query.order_by(func.random()).limit(5).all()
     return render_template('home.html', items=items, categories=categories)
 
-@app.route('/signin', methods=["GET", "POST"])
-def signin():
-    email = None
-    password = None
-    pw_to_check = None
-    passed = None
-    form = PasswordForm()
-    if form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data
-        #clearing the form
-        (form.email.data, form.password.data) = ("","")
-        
-        #lookup user by email address
-        pw_to_check = User.query.filter_by(email=email).first()
-        #check hashed password
-        passed = check_password_hash(pw_to_check.hashed_password, password)
-
-    return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check, passed=passed, form=form)
 
 
-@app.route('/user_signup', methods=['GET','POST'])
+#---------------------USER------------------------------
+@app.route('/signup', methods=['GET','POST'])
 def add_user():
     form = UserForm()
     if form.validate_on_submit():
@@ -106,7 +90,28 @@ def add_user():
                 flash(f'An error occurred: {str(e)}', 'error')
         else:
             flash('Passwords do not match, please try again...', 'error')
-    return render_template('usersignup.html', form=form)    
+    return render_template('usersignup.html', form=form)  
+
+
+@app.route('/signin', methods=["GET", "POST"])
+def signin():
+    email = None
+    password = None
+    pw_to_check = None
+    passed = None
+    form = PasswordForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        #clearing the form
+        (form.email.data, form.password.data) = ("","")
+        
+        #lookup user by email address
+        pw_to_check = User.query.filter_by(email=email).first()
+        #check hashed password
+        passed = check_password_hash(pw_to_check.hashed_password, password)
+
+    return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check, passed=passed, form=form)  
 
 
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
