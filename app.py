@@ -67,6 +67,12 @@ def index():
     return render_template('home.html', items=items, categories=categories)
 
 
+@app.route('/user_list')
+def userlist():
+    users = User.query.all()
+    return render_template('userlist.html', users=users)
+
+
 
 #---------------------USER------------------------------
 @app.route('/signup', methods=['GET','POST'])
@@ -129,17 +135,15 @@ def user_update(user_id):
             flash(f'An error occurred: {str(e)}')
     return render_template('user_update.html', form=form, user=user)
 
-@app.route('/user_list')
-def userlist():
-    users = User.query.all()
-    return render_template('userlist.html', users=users)
 
+
+#--------------------ADMIN-------------------------------
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
 
 
-#CATEGORIES
+#--------------------CATEGORIES--------------------------
 @app.route('/admin/new_category', methods=['GET', 'POST'])
 def new_cat():
     cat_name = None
