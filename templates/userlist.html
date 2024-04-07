@@ -12,6 +12,7 @@
                 <th>Email</th>
                 <th>Address</th>
                 <th>Password</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.address }}</td>
                     <td>{{ user.hashed_password }}</td>
+                    <td><a href="{{ url_for('deluser', user_id=id) }}" class="btn btn-danger">Delete</a></td>
                 </tr>
             {% endfor %}
     </table>

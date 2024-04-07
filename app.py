@@ -137,7 +137,7 @@ def user_update(user_id):
 
 
 @app.route('/delete/<int:user_id>', methods=['POST', 'GET'])
-def delusers(user_id):
+def deluser(user_id):
     user = User.query.get_or_404(user_id)
     try:
         db.session.delete(user)
