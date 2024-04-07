@@ -1,6 +1,5 @@
-import sqlite3
+from app import app, db
 
-con = sqlite3.connect('NovaCart.db')
-con.close()
-
-print('NovaCart database has been successfully created')
+#ONLY NEEDS TO BE RUN ONCE FOR DATABASE CREATION
+with app.app_context():
+    db.create_all()

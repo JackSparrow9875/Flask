@@ -9,7 +9,7 @@ class UserForm(FlaskForm):
     email = StringField("Enter your Email", validators=[DataRequired()])
     address = StringField("Enter your Address", validators=[DataRequired()])
     password = PasswordField("Enter a Password", validators=[DataRequired()])
-    password2 = PasswordField("Confirm Ppassword", validators=[DataRequired()])
+    password2 = PasswordField("Confirm Password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 class UpdateUserForm(FlaskForm):
