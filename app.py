@@ -109,15 +109,12 @@ def signin():
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
-        #clearing the form
         (form.email.data, form.password.data) = ("","")
-        
-        #lookup user by email address
-        pw_to_check = User.query.filter_by(email=email).first()
-        #check hashed password
-        passed = check_password_hash(pw_to_check.hashed_password, password)
-
-    return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check, passed=passed, form=form)  
+        try:
+            pw_to_check = User.query.filter_by(email=email).first()
+            #check hashed password
+            passed = check_password_hash(pw_to_check.hashed_password, password)
+            return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check, passed=passed, form=form)  
 
 
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
