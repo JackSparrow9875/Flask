@@ -91,13 +91,13 @@ def add_user():
     if form.validate_on_submit():
         name = form.name.data
         email = form.email.data
-        fav_color = form.fav_color.data
+        address = form.address.data
         password = form.password.data
         password2 = form.password2.data
         if password == password2:
             hashed_password = generate_password_hash(password)
             try:
-                new_user = User(name=name, email=email, fav_color=fav_color, hashed_password=hashed_password)
+                new_user = User(name=name, email=email, address=address, hashed_password=hashed_password)
                 db.session.add(new_user)
                 db.session.commit()
                 flash('User added successfully!', 'success')
@@ -106,7 +106,7 @@ def add_user():
                 flash(f'An error occurred: {str(e)}', 'error')
         else:
             flash('Passwords do not match, please try again...', 'error')
-    return render_template('usersignup.html', form=form)
+    return render_template('usersignup.html', form=form)    
 
 
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
@@ -116,7 +116,7 @@ def user_update(user_id):
     if request.method == 'POST' and form.validate_on_submit():
         user.name = form.updated_name.data
         user.email = form.updated_email.data
-        user.fav_color = form.updated_color.data
+        user.address = form.updated_color.data
         try:
             db.session.commit()
             flash('User details updated successfully!')
