@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, url_for, request
+from flask import Flask, render_template, flash, redirect, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import func
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -134,6 +134,17 @@ def user_update(user_id):
         except Exception as e:
             flash(f'An error occurred: {str(e)}')
     return render_template('user_update.html', form=form, user=user)
+
+
+@app.route('/delete/<int:user_id>', methods=['POST', 'GET'])
+def delusers(user_id);
+    user = User.query.get_or_404(user_id)
+    try:
+        db.session.delete(user)
+        db.session.commit()
+    except Exception as e:
+        flash(f'An error occured: {str(e)}')
+        return redirect(url_for('index'))
 
 
 
