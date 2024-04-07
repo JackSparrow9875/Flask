@@ -56,9 +56,6 @@ class Items(db.Model):
     available = db.Column(db.Boolean, default=True)
     item_img = db.Column(db.String)
 
-    def __repr__(self):
-        return f"<Item {self.item_name}; Price: {self.item_price}; Available: {self.available}"
-
 
 #DEFINING ROUTES AND VIEWS
 @app.route('/')
