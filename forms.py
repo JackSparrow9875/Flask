@@ -5,11 +5,11 @@ from wtforms.validators import DataRequired, EqualTo, Length
 
 
 class UserForm(FlaskForm):
-    name = StringField("What is your name?", validators=[DataRequired()])
-    email = StringField("Enter your email", validators=[DataRequired()])
-    fav_color = StringField("What is your favorite color?", validators=[DataRequired()])
-    password = PasswordField("Enter your password", validators=[DataRequired()])
-    password2 = PasswordField("Confirm password", validators=[DataRequired()])
+    name = StringField("Enter your Name", validators=[DataRequired()])
+    email = StringField("Enter your Email", validators=[DataRequired()])
+    address = StringField("Enter your Address", validators=[DataRequired()])
+    password = PasswordField("Enter a Password", validators=[DataRequired()])
+    password2 = PasswordField("Confirm Ppassword", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 class UpdateUserForm(FlaskForm):
