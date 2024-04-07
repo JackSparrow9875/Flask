@@ -91,7 +91,7 @@ def add_user():
                 db.session.add(new_user)
                 db.session.commit()
                 flash('User added successfully!', 'success')
-                return redirect(url_for('user', name=name))
+                return redirect(url_for('userlist'))
             except Exception as e:
                 flash(f'An error occurred: {str(e)}', 'error')
         else:
@@ -142,6 +142,8 @@ def deluser(user_id):
     try:
         db.session.delete(user)
         db.session.commit()
+        flash('User delted successfully')
+        return redirect(url_for('add_user'))
     except Exception as e:
         flash(f'An error occured: {str(e)}')
         return redirect(url_for('index'))
