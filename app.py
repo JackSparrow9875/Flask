@@ -90,7 +90,7 @@ def add_user():
     form = UserForm()
     if form.validate_on_submit():
         name = form.name.data
-        email = form.email.data
+        email = form.email.data                                                 
         address = form.address.data
         password = form.password.data
         password2 = form.password2.data
