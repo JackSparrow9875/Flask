@@ -136,7 +136,7 @@ def user_update(user_id):
     return render_template('user_update.html', form=form, user=user)
 
 
-@app.route('/delete/<int:user_id>', methods=['POST', 'GET'])
+@app.route('/delete/<int:user_id>')
 def deluser(user_id):
     user = User.query.get_or_404(user_id)
     try:
