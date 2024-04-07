@@ -107,6 +107,7 @@ class UpdateItem(FlaskForm):
     update_item_img = FileField('Update the item image', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField("Submit")
 
+
 #DEFINING ROUTES AND VIEWS
 @app.route('/')
 def index():
@@ -182,6 +183,7 @@ def userlist():
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
+
 
 #CATEGORIES
 @app.route('/admin/new_category', methods=['GET', 'POST'])
@@ -288,7 +290,7 @@ def update_item(item_id):
     return render_template('', form=form, item=item)
 
 
-# Error handlers
+#ERROR HANDLERS
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
