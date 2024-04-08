@@ -3,46 +3,48 @@
 {% block title %} User Signup {% endblock %}
 
 {% block content %}
-    {% for message in get_flashed_messages(with_categories=true) %}
-        {% if message[1] == 'success' %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ message[0] }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% elif message[1] == 'error' %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ message[0] }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+    {% for message in get_flashed_messages() %}
+        {% if 'error' in message %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% elif 'do not match' in message %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% else %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         {% endif %}
     {% endfor %}
 
-    {% if name and email %}
-        <h1>Hello {{ name }}!!</h1>
-    {% else %}
-        <h1>Enter your Details to Signup for free..!</h1>
-        <br/>
-        <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
-            <form method="POST">
-                {{ form.hidden_tag() }}
+    
+    <h1>Enter your Details to Signup for free..!</h1>
+    <br/>
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+        <form method="POST">
+            {{ form.hidden_tag() }}
 
-                {{ form.name.label(class="form-label") }}
-                {{ form.name(class="form-control") }}
-                <br/>
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control") }}
-                <br/>
-                {{ form.address.label(class="form-label") }}
-                {{ form.address(class="form-control") }}
-                <br/>
-                {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control") }}
-                <br/>
-                {{ form.password2.label(class="form-label") }}
-                {{ form.password2(class="form-control") }}
-                <br/>
-                {{ form.submit(class="btn btn-primary") }}
-            </form>
-        </div>
-    {% endif %}
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+            <br/>
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+            <br/>
+            {{ form.address.label(class="form-label") }}
+            {{ form.address(class="form-control") }}
+            <br/>
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control") }}
+            <br/>
+            {{ form.password2.label(class="form-label") }}
+            {{ form.password2(class="form-control") }}
+            <br/>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>
 {% endblock %}

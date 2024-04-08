@@ -90,12 +90,12 @@ def add_user():
                 new_user = User(name=name, email=email, address=address, hashed_password=hashed_password)
                 db.session.add(new_user)
                 db.session.commit()
-                flash('User added successfully!', 'success')
+                flash('User added successfully!')
                 return redirect(url_for('userlist'))
             except Exception as e:
-                flash(f'An error occurred: {str(e)}', 'error')
+                flash(f'An error occurred: {str(e)}')
         else:
-            flash('Passwords do not match, please try again...', 'error')
+            flash('Passwords do not match, please try again...')
     return render_template('usersignup.html', form=form)  
 
 
@@ -143,7 +143,7 @@ def deluser(user_id):
     try:
         db.session.delete(user)
         db.session.commit()
-        flash('User delted successfully')
+        flash('User deleted successfully')
         return redirect(url_for('add_user'))
     except Exception as e:
         flash(f'An error occured: {str(e)}')
