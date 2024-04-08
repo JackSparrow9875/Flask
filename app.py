@@ -125,20 +125,26 @@ def signin():
 def user_update(user_id):
     form = UserForm()
     user = User.query.get_or_404(user_id)
-    if request.method == 'POST' and form.validate_on_submit():
-        prev_name = user.name
-        prev_email = user.email
-        prev_address = user.address
 
+    prev_name = user.name
+    prev_email = user.email
+    prev_address = user.address
+
+    if request.method == 'POST' and form.validate_on_submit():
         #updating the fields as obtained from the form
         user.name = form.name.data
         user.email = form.email.data
         user.address = form.address.data
         try:
             db.session.commit()
+            form.name.data = ''
+            form.email.data = ''
+            form.address.data = ''
             flash('User details updated successfully!')
+            return render_template('userlist.html')
         except Exception as e:
             flash(f'An error occurred: {str(e)}')
+            return render_template('user_update.html', form=form, user=user, prev_name=prev_name, prev_email=prev_email, prev_address=prev_address)
     return render_template('user_update.html', form=form, user=user, prev_name=prev_name, prev_email=prev_email, prev_address=prev_address)
 
 
