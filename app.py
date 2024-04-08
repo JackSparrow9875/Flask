@@ -4,7 +4,7 @@ from sqlalchemy.sql.expression import func
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
-from forms import UpdateCat, UpdateItem, UpdateUserForm, UserForm, LoginForm, NewCategory, NewItem
+from forms import UpdateCat, UpdateItem, UserForm, LoginForm, NewCategory, NewItem
 import os
 from datetime import datetime, timezone
 
@@ -123,18 +123,23 @@ def signin():
 
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
 def user_update(user_id):
-    form = UpdateUserForm()
+    form = UserForm()
     user = User.query.get_or_404(user_id)
     if request.method == 'POST' and form.validate_on_submit():
-        user.name = form.updated_name.data
-        user.email = form.updated_email.data
-        user.address = form.updated_color.data
+        prev_name = user.name
+        prev_email = user.email
+        prev_address = user.address
+
+        #updating the fields as obtained from the form
+        user.name = form.name.data
+        user.email = form.email.data
+        user.address = form.address.data
         try:
             db.session.commit()
             flash('User details updated successfully!')
         except Exception as e:
             flash(f'An error occurred: {str(e)}')
-    return render_template('user_update.html', form=form, user=user)
+    return render_template('user_update.html', form=form, user=user, prev_name=prev_name, prev_email=prev_email, prev_address=prev_address)
 
 
 @app.route('/delete/<int:user_id>')

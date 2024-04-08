@@ -4,14 +4,20 @@
 
 {% block content %}
     {% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        Hey {{ updated_name }} - {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>    
+        {% if 'error' in message %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% else %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>    
     {% endfor %}
 
-    {% if updated_name or updated_email or updated_color %}
-        <h1>Hello {{ updated_name }}!!</h1>
+    {% if name or email or address %}
+        <h1>Hello {{ name }}!!</h1>
     {% else %}
         <h1>User Data Update Form for User ID: {{ user_id }}</h1>
         <br/>
@@ -19,14 +25,14 @@
             <form method="POST">
                 {{ form.hidden_tag() }}
 
-                {{ form.updated_name.label(class="form-label") }}
-                {{ form.updated_name(class="form-control", value=prev_name) }}
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control", value=prev_name) }}
                 <br/>
-                {{ form.updated_email.label(class="form-label") }}
-                {{ form.updated_email(class="form-control", value=prev_email) }}
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", value=prev_email) }}
                 <br/>
-                {{ form.updated_color.label(class="form-label") }}
-                {{ form.updated_color(class="form-control", value=prev_color) }}
+                {{ form.address.label(class="form-label") }}
+                {{ form.address(class="form-control", value=prev_address) }}
                 <br/>
                 <!-- NOTE: Not updating the password here -->
                 {{ form.submit(class="btn btn-primary") }}
