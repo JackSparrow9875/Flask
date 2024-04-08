@@ -4,7 +4,7 @@ from sqlalchemy.sql.expression import func
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
-from forms import UpdateCat, UpdateItem, UpdateUserForm, UserForm, PasswordForm, NewCategory, NewItem
+from forms import UpdateCat, UpdateItem, UpdateUserForm, UserForm, LoginForm, NewCategory, NewItem
 import os
 from datetime import datetime, timezone
 
@@ -105,7 +105,7 @@ def signin():
     password = None
     pw_to_check = None
     passed = None
-    form = PasswordForm()
+    form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
@@ -114,7 +114,11 @@ def signin():
             pw_to_check = User.query.filter_by(email=email).first()
             #check hashed password
             passed = check_password_hash(pw_to_check.hashed_password, password)
-            return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check, passed=passed, form=form)  
+            return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check, passed=passed)
+        except Exception as e:
+            flash(f'An error occured: {str(e)}') 
+            return render_template('login.html')
+    return render_template('login.html', form=form) 
 
 
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])

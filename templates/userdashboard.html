@@ -3,26 +3,9 @@
 {% block title %} Sign In - NovaCart {% endblock %}
 
 {% block content %}
-    {% if email %}
-        <h2>I found this info:</h2>
-        Name: {{ pw_to_check.name }}<br/>
-        Email: {{ pw_to_check.email }}<br/>
-        Passwrod: {{ pw_to_check.hashed_password }}<br/>
-        Passed: {{ passed }}
-    {% else %}
-        <h1>User Sign In Form</h1><br/>
-        <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
-            <form method="POST">
-                {{ form.hidden_tag() }}
-
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control") }}
-                <br/>
-                {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control") }}
-                <br/>
-                {{ form.submit(class="btn btn-primary") }}
-            </form>
-        </div>
-    {% endif %}
+    <h2>I found this info:</h2>
+    Name: {{ pw_to_check.name }}<br/>
+    Email: {{ pw_to_check.email }}<br/>
+    Passwrod: {{ pw_to_check.hashed_password }}<br/>
+    Passed: {{ passed }}
 {% endblock %}

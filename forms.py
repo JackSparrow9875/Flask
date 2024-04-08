@@ -18,7 +18,7 @@ class UpdateUserForm(FlaskForm):
     updated_color = StringField("What is your new favorite color?")
     submit = SubmitField("Submit")
 
-class PasswordForm(FlaskForm):
+class LoginForm(FlaskForm):
     email = StringField("Enter your registered email", validators=[DataRequired()])
     password = PasswordField("Enter your password", validators=[DataRequired()])
     submit = SubmitField("Submit")
