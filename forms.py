@@ -19,8 +19,8 @@ class UpdateUserForm(FlaskForm):
     submit = SubmitField("Submit")
 
 class LoginForm(FlaskForm):
-    email = StringField("Enter your registered email", validators=[DataRequired()])
-    password = PasswordField("Enter your password", validators=[DataRequired()])
+    email = StringField("Enter your Registered Email", validators=[DataRequired()])
+    password = PasswordField("Enter your Password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 class NewCategory(FlaskForm):
