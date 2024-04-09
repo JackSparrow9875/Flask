@@ -3,11 +3,13 @@
 {% block title %} Sign In - NovaCart {% endblock %}
 
 {% block content %}
-    <h2>I found this info:</h2>
-    Name: {{ pw_to_check.name }}<br/>
-    Email: {{ pw_to_check.email }}<br/>
-    Passwrod: {{ pw_to_check.hashed_password }}<br/>
-    Passed: {{ passed }}<br/><br/>
-    <a href="{{ url_for('user_update', user_id=pw_to_check.id) }}"><button type="button" class="btn btn-primary">Update Details</button></a>
-    <a href="{{ url_for('deluser', user_id=pw_to_check.id) }}"><button type="button" class="btn btn-primary">Delete Myself</button></a>
+    <h1>User Dashboard</h1><br/>
+    <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+        <strong>Name:</strong> {{ pw_to_check.name }}<br/>
+        <strong>Email:</strong> {{ pw_to_check.email }}<br/>
+        <strong>Passwrod:</strong> {{ pw_to_check.hashed_password }}
+        <strong>Address:</strong> {{ pw_to_check.address }}<br/><br/>
+        <a href="{{ url_for('user_update', user_id=pw_to_check.id) }}"><button type="button" class="btn btn-primary">Update Details</button></a>
+        <a href="{{ url_for('deluser', user_id=pw_to_check.id) }}"><button type="button" class="btn btn-primary">Delete Myself</button></a>
+    </div>
 {% endblock %}

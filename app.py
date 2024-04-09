@@ -104,7 +104,6 @@ def signin():
     email = None
     password = None
     pw_to_check = None
-    passed = None
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -114,7 +113,7 @@ def signin():
             pw_to_check = User.query.filter_by(email=email).first()
             #check hashed password
             passed = check_password_hash(pw_to_check.hashed_password, password)
-            return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check, passed=passed)
+            return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check)
         except Exception as e:
             flash(f'An error occured: {str(e)}') 
             return render_template('login.html')
@@ -125,6 +124,9 @@ def signin():
 def user_update(user_id):
     form = UserForm()
     new_user = User.query.get_or_404(user_id)
+    prev_name = new_user.name
+    prev_email = new_user.email
+    prev_address = new_user.address
     if request.method == 'POST':
         new_user.name = request.form['name']
         new_user.email = request.form['email']
@@ -136,7 +138,8 @@ def user_update(user_id):
         except Exception as e:
             flash(f'An error occurred: {str(e)}')
             return render_template('user_update.html', form=form, user=new_user)
-    return render_template('user_update.html', form=form, user=new_user)
+    else:
+        return render_template('user_update.html', form=form, user_id=new_user.id, prev_name=prev_name, prev_email=prev_email, prev_address=prev_address)
 
 
 @app.route('/delete/<int:user_id>')
