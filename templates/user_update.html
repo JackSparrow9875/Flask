@@ -17,27 +17,23 @@
         {% endif %}    
     {% endfor %}
 
-    {% if name or email or address %}
-        <h1>Hello {{ name }}!!</h1>
-    {% else %}
-        <h1>User Data Update Form for User ID: {{ user_id }}</h1>
-        <br/>
-        <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
-            <form method="POST">
-                {{ form.hidden_tag() }}
+    <h1>User Data Update Form for User ID: {{ user_id }}</h1>
+    <br/>
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+        <form method="POST">
+            {{ form.hidden_tag() }}
 
-                {{ form.name.label(class="form-label") }}
-                {{ form.name(class="form-control", value=prev_name) }}
-                <br/>
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control", value=prev_email) }}
-                <br/>
-                {{ form.address.label(class="form-label") }}
-                {{ form.address(class="form-control", value=prev_address) }}
-                <br/>
-                <!-- NOTE: Not updating the password here -->
-                {{ form.submit(class="btn btn-primary") }}
-            </form>
-        </div>    
-    {% endif %}
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", value=prev_name) }}
+            <br/>
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", value=prev_email) }}
+            <br/>
+            {{ form.address.label(class="form-label") }}
+            {{ form.address(class="form-control", value=prev_address) }}
+            <br/>
+            <!-- NOTE: Not updating the password here -->
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>    
 {% endblock %}

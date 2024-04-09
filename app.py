@@ -124,28 +124,19 @@ def signin():
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
 def user_update(user_id):
     form = UserForm()
-    user = User.query.get_or_404(user_id)
-
-    prev_name = user.name
-    prev_email = user.email
-    prev_address = user.address
-
-    if request.method == 'POST' and form.validate_on_submit():
-        #updating the fields as obtained from the form
-        user.name = form.name.data
-        user.email = form.email.data
-        user.address = form.address.data
+    new_user = User.query.get_or_404(user_id)
+    if request.method == 'POST':
+        new_user.name = request.form['name']
+        new_user.email = request.form['email']
+        new_user.address = request.form['address']
         try:
             db.session.commit()
-            form.name.data = ''
-            form.email.data = ''
-            form.address.data = ''
             flash('User details updated successfully!')
-            return render_template('userdashboard.html')
+            return render_template('userdashboard.html', pw_to_check=new_user)
         except Exception as e:
             flash(f'An error occurred: {str(e)}')
-            return render_template('user_update.html', form=form, user=user, prev_name=prev_name, prev_email=prev_email, prev_address=prev_address)
-    return render_template('user_update.html', form=form, user=user, prev_name=prev_name, prev_email=prev_email, prev_address=prev_address)
+            return render_template('user_update.html', form=form, user=new_user)
+    return render_template('user_update.html', form=form, user=new_user)
 
 
 @app.route('/delete/<int:user_id>')
