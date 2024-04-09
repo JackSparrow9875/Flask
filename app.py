@@ -59,6 +59,7 @@ class Items(db.Model):
 
 #DEFINING ROUTES AND VIEWS
 
+
 #-------------------FUNCTIONALITY---------------------
 @app.route('/')
 def index():
