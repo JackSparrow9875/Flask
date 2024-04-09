@@ -7,5 +7,7 @@
     Name: {{ pw_to_check.name }}<br/>
     Email: {{ pw_to_check.email }}<br/>
     Passwrod: {{ pw_to_check.hashed_password }}<br/>
-    Passed: {{ passed }}
+    Passed: {{ passed }}<br/><br/>
+    <a href="{{ url_for('user_update', user_id=pw_to_check.id) }}"><button type="button" class="btn btn-primary">Update Details</button></a>
+    <a href="{{ url_for('deluser', user_id=pw_to_check.id) }}"><button type="button" class="btn btn-primary">Delete Myself</button></a>
 {% endblock %}

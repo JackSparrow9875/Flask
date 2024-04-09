@@ -141,7 +141,7 @@ def user_update(user_id):
             form.email.data = ''
             form.address.data = ''
             flash('User details updated successfully!')
-            return render_template('userlist.html')
+            return render_template('userdashboard.html')
         except Exception as e:
             flash(f'An error occurred: {str(e)}')
             return render_template('user_update.html', form=form, user=user, prev_name=prev_name, prev_email=prev_email, prev_address=prev_address)
