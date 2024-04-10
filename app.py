@@ -144,24 +144,27 @@ def logout():
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def user_update(user_id):
-    form = UserForm()
-    new_user = User.query.get_or_404(user_id)
-    prev_name = new_user.name
-    prev_email = new_user.email
-    prev_address = new_user.address
-    if request.method == 'POST':
-        new_user.name = request.form['name']
-        new_user.email = request.form['email']
-        new_user.address = request.form['address']
-        try:
-            db.session.commit()
-            flash('User details updated successfully!')
-            return render_template('userdashboard.html', pw_to_check=new_user)
-        except Exception as e:
-            flash(f'An error occurred: {str(e)}')
-            return render_template('user_update.html', form=form, user=new_user)
+    if user_id == current_user.id:
+        form = UserForm()
+        new_user = User.query.get_or_404(user_id)
+        prev_name = new_user.name
+        prev_email = new_user.email
+        prev_address = new_user.address
+        if request.method == 'POST':
+            new_user.name = request.form['name']
+            new_user.email = request.form['email']
+            new_user.address = request.form['address']
+            try:
+                db.session.commit()
+                flash('User details updated successfully!')
+                return render_template('userdashboard.html', pw_to_check=new_user)
+            except Exception as e:
+                flash(f'An error occurred: {str(e)}')
+                return render_template('user_update.html', form=form, user=new_user)
+        else:
+            return render_template('user_update.html', form=form, user_id=new_user.id, prev_name=prev_name, prev_email=prev_email, prev_address=prev_address)
     else:
-        return render_template('user_update.html', form=form, user_id=new_user.id, prev_name=prev_name, prev_email=prev_email, prev_address=prev_address)
+        return redirect(url_for('authentication_failure', e=401))
 
 
 @app.route('/delete/<int:user_id>')
@@ -181,6 +184,7 @@ def deluser(user_id):
 
 #--------------------ADMIN-------------------------------
 @app.route('/admin')
+@login_required
 def admin():
     return render_template('admin.html')
 
@@ -291,6 +295,10 @@ def update_item(item_id):
 
 
 #ERROR HANDLERS
+@app.errorhandler(401)
+def authentication_failure(e):
+    return render_template('401.html'), 401
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
