@@ -4,6 +4,8 @@ from sqlalchemy.sql.expression import func
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
+import flask_login
+from flask_login import UserMixin
 import os
 from datetime import datetime, timezone
 
@@ -15,10 +17,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///NovaCart.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your_secret_key'
 
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True)
