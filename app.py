@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
 import flask_login
-from flask_login import UserMixin
+from flask_login import UserMixin, login_required, login_user, logout_user, current_user
 import os
 from datetime import datetime, timezone
 
@@ -19,6 +19,11 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 db = SQLAlchemy(app)
@@ -107,8 +112,8 @@ def add_user():
     return render_template('usersignup.html', form=form)  
 
 
-@app.route('/signin', methods=["GET", "POST"])
-def signin():
+@app.route('/login', methods=["GET", "POST"])
+def login():
     email = None
     password = None
     pw_to_check = None
@@ -128,7 +133,16 @@ def signin():
     return render_template('login.html', form=form) 
 
 
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    flash('Logout successfull')
+    return redirect(url_for('index'))
+
+
 @app.route('/update/<int:user_id>', methods=['GET', 'POST'])
+@login_required
 def user_update(user_id):
     form = UserForm()
     new_user = User.query.get_or_404(user_id)
@@ -151,6 +165,7 @@ def user_update(user_id):
 
 
 @app.route('/delete/<int:user_id>')
+@login_required
 def deluser(user_id):
     user = User.query.get_or_404(user_id)
     try:
