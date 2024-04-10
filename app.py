@@ -170,15 +170,18 @@ def user_update(user_id):
 @app.route('/delete/<int:user_id>')
 @login_required
 def deluser(user_id):
-    user = User.query.get_or_404(user_id)
-    try:
-        db.session.delete(user)
-        db.session.commit()
-        flash('User deleted successfully')
-        return redirect(url_for('add_user'))
-    except Exception as e:
-        flash(f'An error occured: {str(e)}')
-        return redirect(url_for('index'))
+    if user_id == current_user.id:
+        user = User.query.get_or_404(user_id)
+        try:
+            db.session.delete(user)
+            db.session.commit()
+            flash('User deleted successfully')
+            return redirect(url_for('add_user'))
+        except Exception as e:
+            flash(f'An error occured: {str(e)}')
+            return redirect(url_for('index'))
+    else:
+        return redirect(url_for('authentication_failure', e=401))
 
 
 
