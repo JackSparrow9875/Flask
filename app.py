@@ -126,7 +126,12 @@ def login():
             pw_to_check = User.query.filter_by(email=email).first()
             #check hashed password
             passed = check_password_hash(pw_to_check.hashed_password, password)
-            return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check)
+            if passed==True:
+                login_user(pw_to_check)
+                return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check)
+            else:
+                flash('Login failed, please try again...')
+                return render_template('')
         except Exception as e:
             flash(f'An error occured: {str(e)}') 
             return render_template('login.html')
