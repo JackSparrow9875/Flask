@@ -276,6 +276,7 @@ def add_item():
         form.date_added.data = ""
         form.availability.data = ""
         form.item_img.data = ""
+        #comment added
     return render_template("newitem.html", form=form)
 
 
