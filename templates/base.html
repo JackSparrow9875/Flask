@@ -19,23 +19,29 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {% if current_user %}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url_for('add_user') }}">Signup</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ url_for('login') }}">Sign In</a>
+                            </li>
+                        {% else %}
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ url_for('login') }}">Sign In</a>
+                            <a class="nav-link active" href="{{ url_for('logout') }}">Sign Out</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ url_for('add_user') }}">Signup</a>
-                        </li>
+                            {% if current_user.id == 1 %}
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ url_for('admin') }}">Admin Page</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ url_for('new_cat') }}">Admin Page</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link active" href="{{ url_for('userlist') }}">User List</a>
                         </li>
-                        {% if curren_user.id == 1 %}
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{ url_for('admin') }}">Admin Page</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{ url_for('new_cat') }}">Admin Page</a>
-                        </li>
-                        {% endif %}
                         </ul>
                         <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

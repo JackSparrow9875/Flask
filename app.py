@@ -127,7 +127,7 @@ def login():
             #check hashed password
             passed = check_password_hash(pw_to_check.hashed_password, password)
             if passed==True:
-                login_user(pw_to_check)
+                login_user(pw_to_check)         #setting the user as logged in
                 return render_template('userdashboard.html', email=email, password=password, pw_to_check=pw_to_check)
             else:
                 flash('Login failed, please try again...')
