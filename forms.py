@@ -12,12 +12,6 @@ class UserForm(FlaskForm):
     password2 = PasswordField("Confirm Password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
-# class UpdateUserForm(FlaskForm):
-#     updated_name = StringField("What is your new name?")
-#     updated_email = StringField("Enter your new email")
-#     updated_color = StringField("What is your new favorite color?")
-#     submit = SubmitField("Submit")
-
 class LoginForm(FlaskForm):
     email = StringField("Enter your Registered Email", validators=[DataRequired()])
     password = PasswordField("Enter your Password", validators=[DataRequired()])
