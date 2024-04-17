@@ -196,6 +196,12 @@ def deluser(user_id):
 def admin():
     return render_template('admin.html')
 
+@app.route('/admin/add_category', methods=['GET','POST'])
+@login_required
+def new_cat():
+    form = NewCategory()
+    return render_template('new_cat.html', form=form)
+
 
 #--------------------CATEGORIES--------------------------
 @app.route('/admin/new_category', methods=['GET', 'POST'])

@@ -28,9 +28,14 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="{{ url_for('userlist') }}">User List</a>
                         </li>
+                        {% if curren_user.id == 1 %}
                         <li class="nav-item">
                             <a class="nav-link active" href="{{ url_for('admin') }}">Admin Page</a>
-                        </li>                       
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ url_for('add_cat') }}">Admin Page</a>
+                        </li>
+                        {% endif %}
                         </ul>
                         <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
